@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,9 +32,9 @@ public class FavouriteServiceImpl implements FavouriteService {
 	private final RestTemplate restTemplate;
 	
 	@Override
-	public List<FavouriteDto> findAll() {
+	public List<FavouriteDto> findAll(Pageable pageable) {
 		log.info("*** FavouriteDto List, service; fetch all favourites *");
-		return this.favouriteRepository.findAll()
+		return this.favouriteRepository.findAll(pageable)
 				.stream()
 					.map(FavouriteMappingHelper::map)
 					.map(f -> {
