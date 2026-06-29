@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 		log.info("*** UserDto List, service; fetch all users *");
 		return this.userRepository.findAll()
 				.stream()
-					.map(UserMappingHelper::map)
+					.map(UserMappingHelper::mapNonRestrictedUserDetails)
 					.distinct()
 					.collect(Collectors.toUnmodifiableList());
 	}

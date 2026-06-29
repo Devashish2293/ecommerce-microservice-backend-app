@@ -28,7 +28,17 @@ public interface UserMappingHelper {
 							.build())
 				.build();
 	}
-	
+	public static UserDto mapNonRestrictedUserDetails(final User user) {
+		return UserDto.builder()
+				.userId(user.getUserId())
+				.firstName(user.getFirstName())
+				.lastName(user.getLastName())
+				.imageUrl(user.getImageUrl())
+				.email(user.getEmail())
+				.phone(user.getPhone())
+				.build();
+	}
+
 	public static User map(final UserDto userDto) {
 		return User.builder()
 				.userId(userDto.getUserId())
