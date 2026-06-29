@@ -43,7 +43,6 @@ public class ApiExceptionHandler {
 	
 	@ExceptionHandler(value = {
 		CartNotFoundException.class,
-		OrderNotFoundException.class,
 		IllegalStateException.class,
 	})
 	public <T extends RuntimeException> ResponseEntity<ExceptionMsg> handleApiRequestException(final T e) {
@@ -59,9 +58,26 @@ public class ApiExceptionHandler {
 							.now(ZoneId.systemDefault()))
 					.build(), badRequest);
 	}
-	
-	
-	
+
+	@ExceptionHandler(value = {
+			OrderNotFoundException.class,
+	})
+	public <T extends RuntimeException> ResponseEntity<ExceptionMsg> handleOrderNotFoundException(final T e) {
+
+		log.info("**ApiExceptionHandler controller, handle API request*\n");
+		final var badRequest = HttpStatus.NOT_FOUND;
+
+		return new ResponseEntity<>(
+				ExceptionMsg.builder()
+						.msg("#### " + e.getMessage() + "! ####")
+						.httpStatus(badRequest)
+						.timestamp(ZonedDateTime
+								.now(ZoneId.systemDefault()))
+						.build(), badRequest);
+	}
+
+
+
 }
 
 
