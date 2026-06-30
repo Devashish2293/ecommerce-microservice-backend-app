@@ -5,6 +5,8 @@ import com.selimhorri.app.domain.Order;
 import com.selimhorri.app.dto.CartDto;
 import com.selimhorri.app.dto.OrderDto;
 
+import java.time.LocalDateTime;
+
 public interface OrderMappingHelper {
 	
 	public static OrderDto map(final Order order) {
@@ -13,13 +15,20 @@ public interface OrderMappingHelper {
 				.orderDate(order.getOrderDate())
 				.orderDesc(order.getOrderDesc())
 				.orderFee(order.getOrderFee())
+				.isRecentOrder(!isOlderThanAMonth(order.getOrderDate()))
 				.cartDto(
 						CartDto.builder()
 							.cartId(order.getCart().getCartId())
 							.build())
 				.build();
 	}
-	
+
+	static Boolean isOlderThanAMonth(LocalDateTime orderDate)
+	{
+		return orderDate.isBefore(LocalDateTime.now().minusDays(30));
+	}
+
+
 	public static Order map(final OrderDto orderDto) {
 		return Order.builder()
 				.orderId(orderDto.getOrderId())

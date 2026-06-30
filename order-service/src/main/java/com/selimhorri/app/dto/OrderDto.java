@@ -38,7 +38,7 @@ public class OrderDto implements Serializable {
 	private LocalDateTime orderDate;
 	private String orderDesc;
 	private Double orderFee;
-	
+	private Boolean isRecentOrder;
 	@JsonProperty("cart")
 	@JsonInclude(Include.NON_NULL)
 	private CartDto cartDto;
