@@ -38,12 +38,25 @@ public class FavouriteServiceImpl implements FavouriteService {
 				.stream()
 					.map(FavouriteMappingHelper::map)
 					.map(f -> {
-						f.setUserDto(this.restTemplate
-								.getForObject(AppConstant.DiscoveredDomainsApi
-										.USER_SERVICE_API_URL + "/" + f.getUserId(), UserDto.class));
-						f.setProductDto(this.restTemplate
-								.getForObject(AppConstant.DiscoveredDomainsApi
-										.PRODUCT_SERVICE_API_URL + "/" + f.getProductId(), ProductDto.class));
+						try {
+							f.setUserDto(this.restTemplate.getForObject(
+									AppConstant.DiscoveredDomainsApi.USER_SERVICE_API_URL
+											+ "/" + f.getUserId(),
+									UserDto.class));
+						} catch (IllegalStateException ex) {
+							log.warn("user-service unavailable for userId: {}", f.getUserId());
+							f.setUserDto(null);
+						}
+
+						try {
+							f.setProductDto(this.restTemplate.getForObject(
+									AppConstant.DiscoveredDomainsApi.PRODUCT_SERVICE_API_URL
+											+ "/" + f.getProductId(),
+									ProductDto.class));
+						} catch (IllegalStateException ex) {
+							log.warn("user-service unavailable for userId: {}", f.getUserId());
+							f.setProductDto(null);
+						}
 						return f;
 					})
 					.distinct()
